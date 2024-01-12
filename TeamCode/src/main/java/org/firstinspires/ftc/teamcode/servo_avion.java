@@ -1,34 +1,30 @@
 package org.firstinspires.ftc.teamcode;
-import com.pi4j.io.gpio.*;
-import com.pi4j.wiringpi.GpioUtil;
+
+import com.acmerobotics.roadrunner.util.NanoClock;
+
 public class ServoLauncher {
     public static void main(String[] args) {
-        GpioUtil.export(25, GpioUtil.DIRECTION_OUT); // Must be changed
-        GpioPinPwmOutput pwn = GpioFactory.getInstance().provisionPwmOutpunPin(RaspiPin.GPIO_25);
-        GpioUtil.export(1, GpioUtil.DIRECTION_IN); // Must be changed
-        final GpioPinDigitalInput button = GpioFactory.getInstance().provisionDigitalInputPin(RaspiPin.GPIO_2, PinPullResistance.PULL_DOWN);
-
-
-        int InitialPoition = 1;//Must be changed
+        
+        int initialPosition = 1; // Must be changed
+        int launchPosition = 1000; // Must be changed
 
         try {
             while (true) {
-                if (button.isHigh()) {
-                    pwm.setPwm(InitialPoition);
-                    Thread.sleep(100)//May need to be changed;
-                    pwm.setPwm(0);
-                    break;
+                if (button.isPressed()) {
+                    servo.setPosition(launchPosition);
+                    NanoClock.clock().sleep(1000);// trebuie sters probabil
+                    
+                    servo.setPosition(initialPosition);             
+                    break; 
                 }
-                Thread.sleep(100);//May need to be changed; For stability;
+                
+                NanoClock.clock().sleep(100);// probabil nu trebuie
             }
-        }
-    catch.(Exception e)
-            {
-                e.printStackTrace();
-            }
-    finally{
-                pwm.set.Pwm(0);
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            servo.setPosition(initialPosition);
         }
     }
+}
 
